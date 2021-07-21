@@ -6,7 +6,7 @@ import { GetAllCountries } from './store/action';
 export default function Question({countryName}) {
 
     return (
-        <div className="mt-8 glassmorphism-25 p-8 text-center text-5xl text-white" style={{fontFamily: 'Otomanopee One'}}>
+        <div className="mt-8 p-8 text-center  text-white md:text-5xl" style={{fontFamily: 'Otomanopee One'}}>
             What is the Capital town of <br/> <span>{countryName}</span>
         </div>
     )

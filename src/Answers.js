@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default function Answers({capital}) {
+export default function Answers({capital,clickAnswer,backColor}) {
 
     return (
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md md:max-w-6xl mx-auto w-full">
-           <div className="glassmorphism-25 mb-4 p-2 text-white">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md md:max-w-6xl w-full cursor-pointer md:mx-auto" onClick={clickAnswer}>
+           <div className={`mb-4 p-2 text-white ${backColor}`}>
                {capital}
             </div>
         </div>

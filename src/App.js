@@ -5,29 +5,32 @@ import Question from './Question'
 import AnswerList from './AnswerList'
 import Answers from './Answers'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { GetAllCountries } from './store/action'
 
 function App() {
-  //get Question
+
+  const banku = Math.floor(Math.random() * 250) + 1
+
+  const [answerBack, setAnswerBack] = useState('bg-gray-400')
+  const [countryIndex, setCountryIndex] = useState(banku)
 
   let dispatch = useDispatch()
 
   useEffect(() => {
+    const rr = Math.floor(Math.random())
     dispatch(GetAllCountries())
   }, [])
 
   const { countriesList } = useSelector((state) => state.allCountries)
   console.log('countries', countriesList)
 
-  const countryName = countriesList.filter(function (list, index) {
-    let rnd = Math.floor(Math.random() * 250) + 1
-    // console.log("country index")
-    return index == rnd
-  })
+  // const countryName = countriesList.filter(function (list, index) {
+  //   let rnd = Math.floor(Math.random() * 250) + 1
+  //   return index == rnd
+  // })
 
-  console.log('country in Question', countryName)
 
   //1 random country
   var a = countriesList.map((country) => country)
@@ -38,12 +41,6 @@ function App() {
     .map((a) => a.x)
     .slice(0, num)
 
-  console.log('countryInQuestion', countryInQuestion)
-
-  console.log('striped countryInQuestion', countryInQuestion[0])
-
-  console.log('country Answer', countryInQuestion[0]?.capital)
-
   //3 random capitals
   const n = 3
   const sampleAnswers = a
@@ -53,9 +50,9 @@ function App() {
     .slice(0, n)
 
   const options = [...sampleAnswers, countryInQuestion[0]] 
-  console.log("optionsConcat",options)
+  // console.log("optionsConcat",options)
 
-  console.log('random 3 + correct answer', sampleAnswers)
+  // console.log('random 3 + correct answer', sampleAnswers)
 
   //check for empty answer
   for(var a=0;a<sampleAnswers.length;a++){
@@ -74,17 +71,30 @@ function App() {
   }
 
   var sh = shuffle(options)
-  console.log('shuffled options', sh)
+  // console.log('shuffled options', sh)
+
+  //click answer logic
+  const answerClick = (country) =>{
+    
+    if(countryInQuestion[0]?.capital == country.capital){
+      //alert("Correct answer")
+      setAnswerBack(`bg-green-900`)
+    }else{
+      //alert("Wrong answer")
+      setAnswerBack(`bg-red-900`)
+    }
+
+    setCountryIndex(banku)
+  }
 
   return (
-    <div className="bg-gradient-to-r from-gray-700 via-gray-900 to-black h-screen flex">
+    <div className="bg-gradient-to-r from-gray-700 via-gray-900 to-black h-screen flex min-h-screen pb-16">
       <div className="w-3/5 m-auto">
         <Header />
         <Question countryName={countryInQuestion[0]?.name} />
         <div className="md:flex justify-between">
           {sh&&sh.map((option) => (
-            // <Answers key={option?.alpha2Code} capital={option?.capital} />
-            <Answers capital={option?.capital} />
+            <Answers capital={option?.capital} clickAnswer={()=>answerClick(option)} backColor={answerBack}/>
           ))}
         </div>
       </div>
