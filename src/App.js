@@ -16,6 +16,9 @@ function App() {
   const [answerBack, setAnswerBack] = useState('bg-gray-400')
   const [countryIndex, setCountryIndex] = useState(banku)
 
+  const [correctOptions, setCorrectOptions] = useState(0)
+  const [totalQuestions, setTotalQuestions] = useState(0)
+
   let dispatch = useDispatch()
 
   useEffect(() => {
@@ -25,12 +28,6 @@ function App() {
 
   const { countriesList } = useSelector((state) => state.allCountries)
   console.log('countries', countriesList)
-
-  // const countryName = countriesList.filter(function (list, index) {
-  //   let rnd = Math.floor(Math.random() * 250) + 1
-  //   return index == rnd
-  // })
-
 
   //1 random country
   var a = countriesList.map((country) => country)
@@ -50,10 +47,7 @@ function App() {
     .slice(0, n)
 
   const options = [...sampleAnswers, countryInQuestion[0]] 
-  // console.log("optionsConcat",options)
-
-  // console.log('random 3 + correct answer', sampleAnswers)
-
+ 
   //check for empty answer
   for(var a=0;a<sampleAnswers.length;a++){
     if(sampleAnswers[a].capital.length == 0){
@@ -71,18 +65,19 @@ function App() {
   }
 
   var sh = shuffle(options)
-  // console.log('shuffled options', sh)
 
   //click answer logic
   const answerClick = (country) =>{
     
     if(countryInQuestion[0]?.capital == country.capital){
-      //alert("Correct answer")
       setAnswerBack(`bg-green-900`)
+      setCorrectOptions(correctOptions+1)
+      // localStorage.setItem('score', correctOptions);
     }else{
-      //alert("Wrong answer")
       setAnswerBack(`bg-red-900`)
     }
+    setTotalQuestions(totalQuestions+1)
+    // localStorage.setItem('totalAttempts', totalQuestions);
 
     setCountryIndex(banku)
   }
@@ -90,10 +85,11 @@ function App() {
   return (
     <div className="bg-gradient-to-r from-gray-700 via-gray-900 to-black h-screen flex min-h-screen pb-16">
       <div className="w-3/5 m-auto">
-        <Header />
+        <Header answered={correctOptions} total={totalQuestions}/>
         <Question countryName={countryInQuestion[0]?.name} />
         <div className="md:flex justify-between">
           {sh&&sh.map((option) => (
+            // <Answers capital={option?.capital} clickAnswer={()=>answerClick(option)} backColor={answerBack}/>
             <Answers capital={option?.capital} clickAnswer={()=>answerClick(option)} backColor={answerBack}/>
           ))}
         </div>
