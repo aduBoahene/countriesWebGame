@@ -1,8 +1,6 @@
-import logo from './logo.svg'
 import './App.css'
 import Header from './Header'
 import Question from './Question'
-import AnswerList from './AnswerList'
 import Answers from './Answers'
 
 import React, { useEffect, useState } from 'react'
@@ -22,12 +20,12 @@ function App() {
   let dispatch = useDispatch()
 
   useEffect(() => {
-    const rr = Math.floor(Math.random())
     dispatch(GetAllCountries())
   }, [])
 
   const { countriesList } = useSelector((state) => state.allCountries)
   console.log('countries', countriesList)
+
 
   //1 random country
   var a = countriesList.map((country) => country)
@@ -49,10 +47,9 @@ function App() {
   const options = [...sampleAnswers, countryInQuestion[0]] 
  
   //check for empty answer
-  for(var a=0;a<sampleAnswers.length;a++){
-    if(sampleAnswers[a].capital.length == 0){
-      //alert("empty capital found")
-      sampleAnswers[a].capital = sampleAnswers[a].name
+  for(var v=0;v<sampleAnswers.length;a++){
+    if(sampleAnswers[v].capital.length == 0){
+      sampleAnswers[v].capital = sampleAnswers[v].name
     }
   }
 
